@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="container">
+  <div class="sample mt-3">
+    <h2>Cake builder</h2>
+    <hr>
+    <button class="btn btn-primary"
+            type="button"
+            @click="addLayer"
+    >
+      Add layer
+    </button>
+    <hr>
+    <div class="row">
+      <div class="col col-sm-6">
+        <div class="cake">
+          <div class="layer"
+               :class="'layer-' + layer.type"
+               :style="{height: layer.height * 10 + 'px'}"
+               v-for="(layer, i) in layers"
+               @click="changeHeight(i, 1)"
+               @contextmenu.prevent="changeHeight(i, -1)"
+          ></div>
+        </div>
+      </div>
+      <div class="col col-sm-6">
+        <table class="table table-bordered"
+               v-show="hasLayers">
+          <tr>
+            <th>Type</th>
+            <th>Height</th>
+            <th>Actions</th>
+          </tr>
+          <tr v-for="(layer, i) in layers">
+            <td>
+              <select class="form-control"
+                      v-model="layers[i].type"
+              >
+                <option :value="key"
+                        v-for="(lt, key) in layersTypes"
+                >
+                  {{ lt.label }}
+                </option>
+              </select>
+            </td>
+            <td>
+              <input type="text"
+                     class="form-control"
+                     v-model.number="layers[i].height"
+              >
+            </td>
+            <td>
+              <button class="btn btn-danger"
+                      type="button"
+                      @click="deleteLayer(i)"
+              >
+                -
+              </button>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="alert alert-success clearfix"
+         v-show="hasLayers">
+      <span class="price float-left">
+          {{ price }}
+          UAH
+      </span>
+      <button class="btn btn-success float-right" type="button">
+        Order now!
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<script src="js/scripts.js"></script>
+</body>
+</html>
